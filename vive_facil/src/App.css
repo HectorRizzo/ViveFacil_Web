@@ -1,0 +1,128 @@
+.App {
+  text-align: center;
+}
+
+p{
+  font-family: 'Gotham';
+  color: #43368d;
+
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: 'Avennir';
+  color: #43368d;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.bar-nav{
+  height: 150px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+
+}
+
+.header-bar{
+  height:120px;
+}
+
+.header-nav{
+  background:#43378d;
+  height:82px;
+
+}
+
+.icon-nav{
+  height: 50px;
+}
+
+.linea-amarilla{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 90px;
+}
+
+.main-container{
+  margin-left:3rem;
+  margin-top: 1rem;
+}
+
+.nav{
+  display:flex;
+  
+  align-items:center;
+  margin-bottom:2rem;
+  width: 100%;
+  font-size: larger;
+}
+
+.nav-container{
+  display:flex;
+  align-items:center;
+  background:#43378d;
+  justify-content: center !important;
+}
+
+.logo{
+  height:150px;
+}
+
+p{
+  font-family: cursive; 
+}
+
+.titulo-tab{
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: fixed;
+  margin-left: 17rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  height: 130px;
+}
+
+@font-face {
+  font-family: 'Gotham' ;
+  src: url('./Fonts/Gotham\ Condensed\ Book.otf') ;
+}
+
+@font-face {
+  font-family: 'Avennir' ;
+  src: url('./Fonts/Avenir.ttc') ;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
