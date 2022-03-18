@@ -37,7 +37,15 @@ export default class Api{
     return Api.instanceAxios.get('/servicios/')
   }
 
+  
+  static getProfesiones = () =>{
+    return Api.instanceAxios.get('/profesiones/')
+  }
 
+  static getCiudades = () =>{
+    return Api.instanceAxios.get('/ciudades/')
+  }
+ 
 
 
 }
