@@ -73,10 +73,10 @@ export default class Home extends Component {
                             alt="Third slide"
                             />
 
-                            <Carousel.Caption>
+                            {/* <Carousel.Caption>
                             <h3>Third slide label</h3>
                             <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                            </Carousel.Caption>
+                            </Carousel.Caption> */}
                         </Carousel.Item>
                     </Carousel>
                 </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import  Api  from '../../helpers/api';
 //importar componente CardColumn de Bootstrap
-import { CardGroup,Card, Row } from 'react-bootstrap';
+import { CardGroup,Card, Row ,Carousel} from 'react-bootstrap';
 
 //css
 import './promociones.css'
@@ -32,8 +32,10 @@ export default class Promociones extends Component {
         return (
             <div>                
                 <div className='container-promociones'>
+                
                     {this.state.promociones.map(promocion => (
                         <>
+                       
                         <div className='container-promocion'>
                             <img className='img-promocion' src={url+promocion.foto} alt="imagen" />
                             <div>
@@ -47,7 +49,6 @@ export default class Promociones extends Component {
                         
                         </>
                     ))}
-                    
                 </div>
                 
             </div>

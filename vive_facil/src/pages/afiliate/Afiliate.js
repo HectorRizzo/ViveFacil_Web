@@ -18,6 +18,7 @@ export default class Afiliate extends Component {
           direccion:'',
           estado:false,
           profesion:'',
+          otro:'',
           ano_experiencia:'',
           telefono:'',
           tipo_cuenta:'',
@@ -102,6 +103,9 @@ export default class Afiliate extends Component {
             return false
 
         }
+        else if(this.state.profesion=="Otra" && (this.state.otro =="" || this.state.otro ==undefined)){
+            return false
+        }
         else{
             return true
         }
@@ -143,7 +147,18 @@ export default class Afiliate extends Component {
         formData.append("direccion", this.state.direccion)
         formData.append("email", this.state.email)
         formData.append("telefono", this.state.telefono)
-        formData.append("profesion",this.state.profesion)
+        if(this.state.profesion=="Otra"){
+            if(this.state.otro.length >1){
+                let profesionFormateada = String(this.state.otro).charAt(0).toUpperCase()+String(this.state.otro).slice(1)
+                formData.append("profesion",profesionFormateada.trim())
+            }else{
+                formData.append("profesion",this.state.otro.trim())
+            }
+            
+        }else{
+            formData.append("profesion",this.state.profesion)
+        }
+        
         formData.append("ano_experiencia",this.state.ano_experiencia)
         formData.append("banco",this.state.banco)
         formData.append("numero_cuenta",this.state.numero_cuenta)
@@ -166,27 +181,6 @@ export default class Afiliate extends Component {
         console.log(formData.get("planilla_servicios"))
         
         console.log(this.state.copiaCedula[0])
-
-        // let data= {
-        //     "nombres": this.state.nombres,
-        //     "apellidos":  this.state.apellidos,
-        //     "ciudad":  this.state.ciudad,
-        //     "direccion": this.state.direccion,
-        //     "email":  this.state.email,
-        //     "telefono":  this.state.telefono,
-        //     "cedula":  this.state.cedula,
-        //     "estado":  this.state.estado,
-        //     "licencia" : this.state.licencia,
-        //     "copiaLicencia": this.state.copiaLicencia,
-        //     "copiaCedula": this.state.copiaCedula,
-        //     "profesion":  this.state.profesion,
-        //     "ano_experiencia":  this.state.ano_experiencia,
-        //     "banco":  this.state.banco,
-        //     "numero_cuenta":  this.state.numero_cuenta,
-        //     "tipo_cuenta":  this.state.tipo_cuenta,
-        //     "planilla_servicios":this.state.planilla_servicios
-        // }
-        // console.log(data)
 
         let check = this.revisarDatos()
         console.log(check)
@@ -451,21 +445,33 @@ export default class Afiliate extends Component {
                             <FloatingLabel className='label-multiple-choice'  sm="4" controlId="profesionFloating" label="Profesiones" value={this.state.profesion} onChange={e => this.setState({ profesion: e.target.value })}>
                                 <Form.Select className='text-form' sm="4" aria-label="Floating label select example">
                                 <option>Seleccione Profesión</option>  
-                    
                                 {this.state.profesiones.map((profesion,key)  => {
                                     return <option className='text-form'key={key}  value={profesion.nombre}>{profesion.nombre}</option> 
                                 })}
+                                 <option>Otra</option> 
                                 </Form.Select>
                             </FloatingLabel>            
                             </Col>
+                            {this.state.profesion=="Otra" &&
+                                <Form.Group as={Col} className="mb-3" controlId="Otro" >
+                                <Form.Label column sm="2">
+                                Otro:
+                                </Form.Label>
+                                <Form.Control className='input-field' type="text" value={this.state.otro} onChange={e => this.setState({ otro: e.target.value })}/>
+          
+                           
+                                 </Form.Group>
+                            }
                         </Form.Group>
+
+
 
                         <Form.Group as={Col} className="mb-3 banco-formulario" controlId="ano_experiencia">
                         <Form.Label column sm="4">
                             Años de experiencia:
                             </Form.Label>
                             <Col sm="4">
-                            <Form.Control  className='input-field' type="number" placeholder="" value={this.state.ano_experiencia} onChange={e => this.setState({ ano_experiencia: e.target.value })}/>
+                            <Form.Control  className='input-field' type="number" min="0" placeholder="" value={this.state.ano_experiencia} onChange={e => this.setState({ ano_experiencia: e.target.value })}/>
                             </Col>
                             
                         </Form.Group>
