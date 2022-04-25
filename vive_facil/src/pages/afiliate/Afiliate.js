@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form, Row, Col, FloatingLabel, Button, Label, Modal} from 'react-bootstrap'
+import {Form, Col, FloatingLabel, Button, Modal} from 'react-bootstrap'
 import  Api  from '../../helpers/api';
 //css
 import './Afiliate.css'
@@ -32,8 +32,11 @@ export default class Afiliate extends Component {
           licencia:'',
           //modal
           showAlert:false,
+          showAlertCedula:false,
           titleModal:'',
+          titleModalCedula:'',
           bodyModal:'',
+          bodyModalCedula:'',
           profesiones:[],
           ciudades: [],
 
@@ -65,18 +68,18 @@ export default class Afiliate extends Component {
 
     validarCedula= (cedula)=>{
 
-        if (typeof(cedula) == 'string' && cedula.length == 10 && /^\d+$/.test(cedula)) {
+        if (typeof(cedula) === 'string' && cedula.length === 10 && /^\d+$/.test(cedula)) {
             var digitos = cedula.split('').map(Number);
             var codigo_provincia = digitos[0] * 10 + digitos[1];
         
             //if (codigo_provincia >= 1 && (codigo_provincia <= 24 || codigo_provincia == 30) && digitos[2] < 6) {
         
-            if (codigo_provincia >= 1 && (codigo_provincia <= 24 || codigo_provincia == 30)) {
+            if (codigo_provincia >= 1 && (codigo_provincia <= 24 || codigo_provincia === 30)) {
               var digito_verificador = digitos.pop();
         
               var digito_calculado = digitos.reduce(
                 function (valorPrevio, valorActual, indice) {
-                  return valorPrevio - (valorActual * (2 - indice % 2)) % 9 - (valorActual == 9) * 9;
+                  return valorPrevio - (valorActual * (2 - indice % 2)) % 9 - (valorActual === 9) * 9;
                 }, 1000) % 10;
               return digito_calculado === digito_verificador;
             }
@@ -88,22 +91,23 @@ export default class Afiliate extends Component {
 
 
     revisarDatos=()=>{
-        if(this.state.nombres.length==0 || this.state.apellidos.length==0 || this.state.ciudad.length==0 ||
-            this.state.email.length==0 || this.state.profesion.length==0 ||
-            this.state.ano_experiencia.length==0 ||this.state.telefono.length!==10 ||
-            this.state.tipo_cuenta.length==0 || this.state.numero_cuenta.length==0 || this.state.banco.length==0 ||
-            this.state.cedula.length==0 || this.state.direccion.length==2||this.state.licencia.length==0 ||
-            this.state.copiaCedula==undefined || this.state.copiaCedula==null||
-            this.state.genero.length==0 || this.state.descripcion==0){
+        if(this.state.nombres.length===0 || this.state.apellidos.length===0 || this.state.ciudad.length===0 ||
+            this.state.email.length===0 || this.state.profesion.length===0 ||
+            this.state.ano_experiencia.length===0 ||this.state.telefono.length!==10 ||
+            this.state.tipo_cuenta.length===0 || this.state.numero_cuenta.length===0 || this.state.banco.length===0 ||
+            this.state.cedula.length===0 || this.state.direccion.length===2||this.state.licencia.length===0 ||
+            this.state.copiaCedula===undefined || this.state.copiaCedula===null||
+            this.state.genero.length===0 || this.state.descripcion===0){
             return false
         }else if(this.state.licencia==="Si" && (this.state.copiaLicencia===undefined ||this.state.copiaLicencia===null ||this.state.copiaLicencia==="" )){
             
             return false
-        }else if(!this.validarCedula(this.state.cedula)){
-            return false
-
         }
-        else if(this.state.profesion=="Otra" && (this.state.otro =="" || this.state.otro ==undefined)){
+        // }else if(!this.validarCedula(this.state.cedula)){
+        //     return false
+
+        // }
+        else if(this.state.profesion==="Otra" && (this.state.otro ==="" || this.state.otro ===undefined)){
             return false
         }
         else{
@@ -137,6 +141,9 @@ export default class Afiliate extends Component {
     handleCloseModal = () =>{
         this.setState({showAlert:false})
     }
+    handleCloseModalCedula = () =>{
+        this.setState({showAlertCedula:false})
+    }
 
     enviarDatos=()=>{
 
@@ -147,7 +154,7 @@ export default class Afiliate extends Component {
         formData.append("direccion", this.state.direccion)
         formData.append("email", this.state.email)
         formData.append("telefono", this.state.telefono)
-        if(this.state.profesion=="Otra"){
+        if(this.state.profesion==="Otra"){
             if(this.state.otro.length >1){
                 let profesionFormateada = String(this.state.otro).charAt(0).toUpperCase()+String(this.state.otro).slice(1)
                 formData.append("profesion",profesionFormateada.trim())
@@ -178,11 +185,15 @@ export default class Afiliate extends Component {
             formData.append("planilla_servicios",file)
         }
 
-        console.log(formData.get("planilla_servicios"))
-        
-        console.log(this.state.copiaCedula[0])
-
         let check = this.revisarDatos()
+        if(!this.validarCedula(this.state.cedula)){
+            console.log(this.validarCedula())
+            this.setState({
+                titleModalCedula:'Error', 
+                bodyModalCedula:'Ingrese una cédula correcta',
+                showAlertCedula:true,
+            })
+        }
         console.log(check)
         if(check){  
             Api.postProveedorPendiente(formData ).then(res=>{
@@ -235,6 +246,18 @@ export default class Afiliate extends Component {
                     <Modal.Body>{this.state.bodyModal}</Modal.Body>
                     <Modal.Footer>
                     <Button variant="secondary" onClick={this.handleCloseModal}>
+                        Ok
+                    </Button>
+                    
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.showAlertCedula} onHide={this.handleCloseModalCedula}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>{this.state.titleModalCedula}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{this.state.bodyModalCedula}</Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleCloseModalCedula}>
                         Ok
                     </Button>
                     
@@ -452,7 +475,7 @@ export default class Afiliate extends Component {
                                 </Form.Select>
                             </FloatingLabel>            
                             </Col>
-                            {this.state.profesion=="Otra" &&
+                            {this.state.profesion==="Otra" &&
                                 <Form.Group as={Col} className="mb-3" controlId="Otro" >
                                 <Form.Label column sm="2">
                                 Otro:
