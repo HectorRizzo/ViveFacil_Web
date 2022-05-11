@@ -187,12 +187,39 @@ export default class Afiliate extends Component {
 
         let check = this.revisarDatos()
         if(!this.validarCedula(this.state.cedula)){
-            console.log(this.validarCedula())
             this.setState({
                 titleModalCedula:'Error', 
                 bodyModalCedula:'Ingrese una cédula correcta',
                 showAlertCedula:true,
             })
+
+        }
+        else{
+            if(check){  
+                Api.postProveedorPendiente(formData).then(res=>{
+                    console.log(res)
+                    if(res.status===200){
+                        this.setState({
+                            showAlert:true,
+                            titleModal:'¡Éxito!',
+                            bodyModal:'Se ha enviado la información correctamente'
+                        })
+                    }else{
+                        this.setState({
+                            showAlert:true,
+                            titleModal:'¡Error!',
+                            bodyModal:'No se ha podido enviar la información'
+                        })
+                    }
+                })
+            }else{
+                this.setState({
+                    titleModal:'Error', 
+                    bodyModal:'Por favor llene todos los campos',
+                    showAlert:true,
+                })
+            }
+
         }
         console.log(check)
         if(check){  
